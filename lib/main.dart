@@ -1,3 +1,4 @@
+import 'package:app_distribuidas_cliente/screens/crear_viaje_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/screens.dart';
 
@@ -11,10 +12,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Go Taxi',
-      initialRoute: 'home',
+      initialRoute: 'login',
       routes: {
         'login': (context) => LoginScreen(),
         'home': (context) => HomeScreen(),
+        'viaje': (context) => CrearViaje(),
       },
     );
   }

@@ -1,24 +1,13 @@
-import 'package:app_distribuidas_cliente/widgets/viaje_card.dart';
 import 'package:flutter/material.dart';
 
-class Solicitudes extends StatelessWidget {
-  const Solicitudes({
-    super.key,
-  });
+import '../widgets/viaje_card.dart';
+
+class Historial extends StatelessWidget {
+  const Historial({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, 'viaje');
-        },
-        backgroundColor: Color(0xff202020),
-        child: Icon(
-          Icons.add,
-          color: Color(0xffFFF000),
-        ),
-      ),
       body: SafeArea(
         child: Container(
           // color: Colors.red,
@@ -36,7 +25,7 @@ class Solicitudes extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 // color: Colors.red,
                 child: Text(
-                  'Bienvenido',
+                  'Tu historial',
                   style: TextStyle(
                     fontSize: 30,
                     fontFamily: 'Archivo-Bold',
@@ -45,7 +34,7 @@ class Solicitudes extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.734,
+                  height: MediaQuery.of(context).size.height * 0.75,
                   // color: Colors.red,
                   child: ListView.builder(
                     itemBuilder: (context, index) => ViajeCard(),
