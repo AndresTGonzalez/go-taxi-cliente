@@ -136,7 +136,7 @@ class _ViajeCardContent extends StatelessWidget {
                 ),
                 onPressed: () {
                   cardProvider.cancelarSolicitud();
-                  Navigator.pushNamed(context, 'home');
+                  // Navigator.pushNamed(context, 'home');
                 },
               ),
             ),

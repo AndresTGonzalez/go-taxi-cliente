@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_distribuidas_cliente/models/solicitudes.dart';
+import 'package:app_distribuidas_cliente/providers/solicitudes_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,6 +21,8 @@ class CardProvider extends ChangeNotifier {
   Future cancelarSolicitud() async {
     final url = Uri.http(_baseUrl, '/api/viajes/$id');
     final resp = await http.put(url);
+    SolicitudesProvider sol = SolicitudesProvider();
+    sol.getSolicitudes();
     // print(jsonDecode(resp.body));
     // print('hola');
     notifyListeners();
