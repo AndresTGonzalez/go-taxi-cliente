@@ -1,4 +1,5 @@
 import 'package:app_distribuidas_cliente/screens/crear_viaje_screen.dart';
+import 'package:app_distribuidas_cliente/screens/registro_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/screens.dart';
 
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
         'login': (context) => LoginScreen(),
         'home': (context) => HomeScreen(),
         'viaje': (context) => CrearViaje(),
+        'registro': (context) => Registro(),
       },
     );
   }

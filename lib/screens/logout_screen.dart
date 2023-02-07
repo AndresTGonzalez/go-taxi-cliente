@@ -41,7 +41,9 @@ class LogoutScreen extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 25),
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, 'login');
+                },
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),

@@ -1,4 +1,7 @@
+import 'package:app_distribuidas_cliente/models/solicitudes.dart';
 import 'package:app_distribuidas_cliente/providers/agregar_carrera_provider.dart';
+import 'package:app_distribuidas_cliente/screens/solicitudes_screen.dart';
+import 'package:app_distribuidas_cliente/utils/sesion.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,32 +65,32 @@ class _AgregarForn extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
+          // TextFormField(
+          //   autocorrect: false,
+          //   // onChanged: (value) => ,
+          //   validator: (value) {
+          //     if (value != null && value.length >= 2) {
+          //       return null;
+          //     } else {
+          //       return 'Ingrese una dirección';
+          //     }
+          //   },
+          //   keyboardType: TextInputType.streetAddress,
+          //   onChanged: (value) {
+          //     // loginForm.email = value;
+          //   },
+          //   decoration: InputDecor.authInputDecoration(
+          //     color: Color(0xff202020),
+          //     hintText: 'Calle los Duraznos 0180',
+          //     labelText: 'Donde estoy',
+          //     // prefixIcon: Icons.alternate_email,
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 25,
+          // ),
           TextFormField(
-            autocorrect: false,
-            // onChanged: (value) => ,
-            validator: (value) {
-              if (value != null && value.length >= 2) {
-                return null;
-              } else {
-                return 'Ingrese una dirección';
-              }
-            },
-            keyboardType: TextInputType.streetAddress,
-            onChanged: (value) {
-              // loginForm.email = value;
-            },
-            decoration: InputDecor.authInputDecoration(
-              color: Color(0xff202020),
-              hintText: 'Calle los Duraznos 0180',
-              labelText: 'Donde estoy',
-              // prefixIcon: Icons.alternate_email,
-            ),
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          TextFormField(
-            autocorrect: false,
+            autocorrect: true,
             // onChanged: (value) => ,
             validator: (value) {
               if (value != null && value.length >= 2) {
@@ -96,9 +99,10 @@ class _AgregarForn extends StatelessWidget {
                 return 'Ingrese una calle válida';
               }
             },
-            keyboardType: TextInputType.streetAddress,
+            keyboardType: TextInputType.text,
             onChanged: (value) {
               // loginForm.email = value;
+              agregarForm.callePrincipal = value;
             },
             decoration: InputDecor.authInputDecoration(
               color: Color(0xff202020),
@@ -111,7 +115,7 @@ class _AgregarForn extends StatelessWidget {
             height: 25,
           ),
           TextFormField(
-            autocorrect: false,
+            autocorrect: true,
             // onChanged: (value) => ,
             validator: (value) {
               if (value != null && value.length >= 2) {
@@ -120,9 +124,10 @@ class _AgregarForn extends StatelessWidget {
                 return 'Ingrese una calle válida';
               }
             },
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.text,
             onChanged: (value) {
               // loginForm.email = value;
+              agregarForm.calleSecundaria = value;
             },
             decoration: InputDecor.authInputDecoration(
               color: Color(0xff202020),
@@ -147,6 +152,7 @@ class _AgregarForn extends StatelessWidget {
             keyboardType: TextInputType.text,
             onChanged: (value) {
               // loginForm.email = value;
+              agregarForm.barrio = value;
             },
             decoration: InputDecor.authInputDecoration(
               color: Color(0xff202020),
@@ -161,13 +167,30 @@ class _AgregarForn extends StatelessWidget {
           TextFormField(
             autocorrect: false,
             // onChanged: (value) => ,
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: TextInputType.text,
             onChanged: (value) {
-              // loginForm.email = value;
+              agregarForm.referencia = value;
             },
             decoration: InputDecor.authInputDecoration(
               color: Color(0xff202020),
-              hintText: 'Cambio de 20.00',
+              hintText: 'Al frente de una tienda',
+              labelText: 'Referencia',
+              // prefixIcon: Icons.alternate_email,
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          TextFormField(
+            autocorrect: false,
+            // onChanged: (value) => ,
+            keyboardType: TextInputType.text,
+            onChanged: (value) {
+              agregarForm.informacion = value;
+            },
+            decoration: InputDecor.authInputDecoration(
+              color: Color(0xff202020),
+              hintText: 'Traer sueltos',
               labelText: 'Información adicional',
               // prefixIcon: Icons.alternate_email,
             ),
@@ -176,7 +199,25 @@ class _AgregarForn extends StatelessWidget {
             height: 50,
           ),
           MaterialButton(
-            onPressed: () {},
+            onPressed: () async {
+              Solicitud solicitud = Solicitud(
+                  id: 0,
+                  usuario: Sesion.usuario.usuario,
+                  callePrincipal: agregarForm.callePrincipal,
+                  calleSecundaria: agregarForm.calleSecundaria,
+                  referencia: agregarForm.referencia,
+                  barrioSector: agregarForm.barrio,
+                  informacionAdicional: agregarForm.informacion,
+                  taxistaAsignado: '',
+                  estado: '');
+              if (!await agregarForm.createCarrera(solicitud)) {
+                print('Error');
+              } else {
+                FocusScope.of(context).unfocus();
+                await Future.delayed(Duration(seconds: 1));
+                Navigator.pushReplacementNamed(context, 'home');
+              }
+            },
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
@@ -196,6 +237,9 @@ class _AgregarForn extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          SizedBox(
+            height: 50,
           ),
         ],
       ),

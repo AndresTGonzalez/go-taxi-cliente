@@ -1,42 +1,30 @@
-import 'dart:math';
-
 import 'package:app_distribuidas_cliente/models/usuario.dart';
-import 'package:app_distribuidas_cliente/providers/login_form_provider.dart';
-import 'package:app_distribuidas_cliente/ui/buttons.dart';
-import 'package:app_distribuidas_cliente/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+import '../providers/registro_form_provider.dart';
+import '../ui/ui.dart';
+
+class Registro extends StatelessWidget {
+  const Registro({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.075,
-                ),
-                _logo(),
-                _title(),
-                _formContainer()
-              ],
-            ),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
+              ),
+              _logo(),
+              _title(),
+              _formContainer()
+            ],
           ),
-        ));
-  }
-
-  Container _formContainer() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 25),
-      child: ChangeNotifierProvider(
-        create: (context) => LoginFormProvider(),
-        child: _LoginForm(),
+        ),
       ),
     );
   }
@@ -46,13 +34,24 @@ class LoginScreen extends StatelessWidget {
       width: double.infinity,
       height: 50,
       alignment: Alignment.centerLeft,
-      margin: const EdgeInsets.symmetric(vertical: 50, horizontal: 25),
+      // color: Colors.red,
+      margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
       child: const Text(
-        'Iniciar sesión',
+        'Regístrate',
         style: TextStyle(
             fontSize: 35,
             fontFamily: 'Archivo-Bold',
             fontWeight: FontWeight.w700),
+      ),
+    );
+  }
+
+  Container _formContainer() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 25),
+      child: ChangeNotifierProvider(
+        create: (context) => RegistroProvider(),
+        child: const _LoginForm(),
       ),
     );
   }
@@ -79,13 +78,37 @@ class _LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loginForm = Provider.of<LoginFormProvider>(context);
+    final registroForm = Provider.of<RegistroProvider>(context);
     return Container(
       child: Form(
-        key: loginForm.formKey,
+        key: registroForm.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
+            TextFormField(
+              autocorrect: true,
+              onChanged: (value) => registroForm.nombre = value,
+              // obscureText: true,
+              keyboardType: TextInputType.text,
+              decoration: InputDecor.authInputDecoration(
+                  hintText: 'Alejandro',
+                  labelText: 'Nombre',
+                  color: Color(0xff202020),
+                  prefixIcon: Icons.badge),
+            ),
+            _formSizeBox(),
+            TextFormField(
+              autocorrect: true,
+              onChanged: (value) => registroForm.apellido = value,
+              // obscureText: true,
+              keyboardType: TextInputType.text,
+              decoration: InputDecor.authInputDecoration(
+                  hintText: 'Rocano',
+                  labelText: 'Apellido',
+                  color: Color(0xff202020),
+                  prefixIcon: Icons.badge),
+            ),
+            _formSizeBox(),
             TextFormField(
               autocorrect: false,
               // onChanged: (value) => ,
@@ -100,7 +123,7 @@ class _LoginForm extends StatelessWidget {
               },
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
-                loginForm.email = value;
+                registroForm.email = value;
               },
               decoration: InputDecor.authInputDecoration(
                 color: Color(0xff202020),
@@ -119,39 +142,52 @@ class _LoginForm extends StatelessWidget {
                   return 'Contraseña mínima de 6 caracteres';
                 }
               },
-              onChanged: (value) => loginForm.password = value,
+              onChanged: (value) => registroForm.password = value,
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
               decoration: InputDecor.authInputDecoration(
                   hintText: '***********',
                   labelText: 'Contraseña',
-                  color: Color(0xff202020),
+                  color: const Color(0xff202020),
                   prefixIcon: Icons.lock),
             ),
             _formSizeBox(),
-            // Buttons.loginButton(
-            //     background: Color(0xffFFD143),
-            //     text: 'Ingresar',
-            //     textColor: Color(0xff202020)),
+            TextFormField(
+              autocorrect: false,
+              validator: (value) {
+                if (value == registroForm.password) {
+                  return null;
+                } else {
+                  return 'Las contraseñas no coinciden';
+                }
+              },
+              onChanged: (value) => registroForm.repeatPassword = value,
+              obscureText: true,
+              keyboardType: TextInputType.visiblePassword,
+              decoration: InputDecor.authInputDecoration(
+                  hintText: '***********',
+                  labelText: 'Repita la contraseña',
+                  color: const Color(0xff202020),
+                  prefixIcon: Icons.lock),
+            ),
+            _formSizeBox(),
             MaterialButton(
-              onPressed: loginForm.isLoading
-                  ? null
-                  : () async {
-                      if (!loginForm.isValidForm()) return;
-                      loginForm.isLoading = true;
-                      FocusScope.of(context).unfocus();
-                      await Future.delayed(Duration(seconds: 2));
-                      Usuario usuario = Usuario(
-                          usuario: loginForm.email,
-                          contrasenia: loginForm.password,
-                          nombre: '',
-                          apellido: '');
-                      if (await loginForm.login(usuario)) {
-                        Navigator.pushReplacementNamed(context, 'home');
-                      } else {
-                        _showToast(context);
-                      }
-                    },
+              onPressed: () async {
+                Usuario usuario = Usuario(
+                    usuario: registroForm.email,
+                    contrasenia: registroForm.password,
+                    nombre: registroForm.nombre,
+                    apellido: registroForm.apellido);
+                if (await registroForm.createUsuario(usuario)) {
+                  // ignore: use_build_context_synchronously
+                  _showToast(context);
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushReplacementNamed(context, 'login');
+                } else {
+                  // ignore: use_build_context_synchronously
+                  _showToastError(context);
+                }
+              },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
@@ -162,10 +198,11 @@ class _LoginForm extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: Text(
-                  loginForm.isLoading ? 'Espere...' : 'Ingresar',
-                  style: const TextStyle(
-                    fontFamily: 'Archivo-Medium',
+                child: const Text(
+                  'Registrarse',
+                  style: TextStyle(
+                    fontFamily: 'Archivo',
+                    fontWeight: FontWeight.w700,
                     fontSize: 15,
                     color: Color(0xff202020),
                   ),
@@ -173,11 +210,11 @@ class _LoginForm extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             MaterialButton(
               onPressed: () {
-                Navigator.pushNamed(context, 'registro');
+                Navigator.pushReplacementNamed(context, 'login');
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
@@ -190,15 +227,17 @@ class _LoginForm extends StatelessWidget {
                 width: double.infinity,
                 alignment: Alignment.center,
                 child: const Text(
-                  'Registrarse',
+                  'Volver al inicio',
                   style: TextStyle(
-                    fontFamily: 'Archivo-Medium',
+                    fontFamily: 'Archivo',
+                    fontWeight: FontWeight.w700,
                     fontSize: 15,
                     color: Colors.white,
                   ),
                 ),
               ),
             ),
+            _formSizeBox()
           ],
         ),
       ),
@@ -209,7 +248,18 @@ class _LoginForm extends StatelessWidget {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        content: const Text('Login incorrecto'),
+        content: const Text('Usuario creado correctamente'),
+        action: SnackBarAction(
+            label: 'Ocultar', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
+
+  void _showToastError(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Hubo un error al crear el usuario'),
         action: SnackBarAction(
             label: 'Ocultar', onPressed: scaffold.hideCurrentSnackBar),
       ),
