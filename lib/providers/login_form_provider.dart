@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_distribuidas_cliente/models/usuario.dart';
+import 'package:app_distribuidas_cliente/utils/ip.dart';
 import 'package:app_distribuidas_cliente/utils/sesion.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class LoginFormProvider extends ChangeNotifier {
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final String _baseUrl = '34.23.106.197:3000';
+  final String _baseUrl = IP.ip;
 
   String email = '';
   String password = '';

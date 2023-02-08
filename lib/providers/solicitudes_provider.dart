@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_distribuidas_cliente/models/solicitudes.dart';
+import 'package:app_distribuidas_cliente/utils/ip.dart';
 import 'package:app_distribuidas_cliente/utils/sesion.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ import 'package:http/http.dart' as http;
 class SolicitudesProvider extends ChangeNotifier {
   List<Solicitud> solicitudes = [];
 
-  final String _baseUrl = '34.23.106.197:3000';
+  final String _baseUrl = IP.ip;
 
   SolicitudesProvider() {
     getSolicitudes();

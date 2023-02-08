@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:app_distribuidas_cliente/models/solicitudes.dart';
 import 'package:app_distribuidas_cliente/providers/solicitudes_provider.dart';
+import 'package:app_distribuidas_cliente/utils/ip.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CardProvider extends ChangeNotifier {
-  final String _baseUrl = '34.23.106.197:3000';
+  final String _baseUrl = IP.ip;
   bool _isLoading = false;
   final int id;
 

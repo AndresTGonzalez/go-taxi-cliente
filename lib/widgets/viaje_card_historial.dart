@@ -40,7 +40,7 @@ class _CardContent extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(30.0),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Colors.black26,
                 offset: Offset(0, 5),
@@ -58,7 +58,7 @@ class _CardContent extends StatelessWidget {
               margin: EdgeInsets.only(left: 20, top: 20),
               child: Text(
                 solicitud.estado!.toUpperCase(),
-                style: TextStyle(
+                style: const TextStyle(
                     fontFamily: 'Archivo-Bold',
                     color: Color(0xff202020),
                     fontSize: 20),
