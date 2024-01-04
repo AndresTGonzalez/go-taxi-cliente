@@ -4,7 +4,7 @@ Go Taxi Cliente
 
 ## Descripción
 
-Aplicación móvil para que los taxistas puedan recibir solicitudes de viajes. Complemento de la aplicación Go Taxi Cliente
+Aplicación móvil para solicitar un taxi en la ciudad de Ambato
 
 ## Instalación
 
